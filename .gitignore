@@ -1,4 +1,6 @@
 boxes/
+cache/
+iso/
 repo/
 Vagrant/
-iso/
+HashiCorp/
