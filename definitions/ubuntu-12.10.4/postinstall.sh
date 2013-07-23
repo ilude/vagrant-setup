@@ -30,26 +30,38 @@ sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
 
 # Install Ruby from source in /opt so that users of Vagrant
 # can install their own Rubies using packages or however.
-wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p385.tar.gz 
-tar xvzf ruby-1.9.3-p385.tar.gz
-cd ruby-1.9.3-p385
+wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p448.tar.gz 
+tar xvzf ruby-1.9.3-p448.tar.gz
+cd ruby-1.9.3-p448
 ./configure 
 make
 make install
 cd ..
-rm -rf ruby-1.9.3-p385
-rm ruby-1.9.3-p385.tar.gz
+rm -rf ruby-1.9.3-p448
+rm ruby-1.9.3-p448.tar.gz
 
 # Update RubyGems
 echo "Updating RubyGem System..."
-/usr/local/bin/gem update --system --no-ri --no-rdoc
+/usr/local/bin/gem update --system
 
 echo "Updating installed gems..."
-/usr/local/bin/gem update --no-ri --no-rdoc
+/usr/local/bin/gem update --no-document
 
 # Install Bundler & chef
-echo "Installing Bundler and Chef..."
-/usr/local/bin/gem install bundler chef --no-ri --no-rdoc
+echo "Installing Bundler..."
+/usr/local/bin/gem install bundler --no-document
+
+echo "Installing Chef..."
+#/usr/local/bin/gem install chef --pre --no-document
+
+# chef is currently all kinds of broken, here's my working branch
+git clone https://github.com/ilude/chef.git
+cd chef/
+bundle install
+bundle exec rake install
+cd ..
+rm -rf chef
+
 
 # Add /opt/ruby/bin to the global path as the last resort so
 # Ruby, RubyGems, and Chef/Puppet are visible
