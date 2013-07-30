@@ -51,9 +51,21 @@ def install_vagrant
   download_and_unpack "http://files.vagrantup.com/packages/0219bb87725aac28a97c0e924c310cc97831fd9d/Vagrant_1.2.4.msi", "#{BUILD_DIR}/", ''
 
   #add vagrant to users path
-  vagrant_bin_dir = File.join(BUILD_DIR, "HashiCorp/Vagrant/embedded/bin").gsub('/', '\\')
+  vagrant_tools_dir = File.join(BUILD_DIR, "HashiCorp/Vagrant/embedded/bin").gsub('/', '\\')
+  vagrant_bin_dir = File.join(BUILD_DIR, "HashiCorp/Vagrant/bin").gsub('/', '\\')
+
+  add_path(vagrant_tools_dir)
+  add_path(vagrant_bin_dir)
+end
+
+def add_path(directory) 
   env = Win32::Registry::HKEY_CURRENT_USER.open('Environment', Win32::Registry::KEY_ALL_ACCESS)
-  env['Path'] = (env['Path'].split(';') << vagrant_bin_dir).join(';') unless env['Path'].include? vagrant_bin_dir
+
+  if env['Path'].include? directory
+    return # if the path already contains the directory, then there is nothing to do.
+  end
+
+  env['Path'] = (env['Path'].split(';') << directory).join(';') 
 
   sendMessageTimeout = Win32API.new('user32', 'SendMessageTimeout', 'LLLPLLP', 'L') 
   result = 0
