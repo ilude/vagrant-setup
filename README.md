@@ -8,8 +8,8 @@ Based off of [Bill's Kitchen](https://github.com/tknerr/bills-kitchen) by [tkner
 Install
 =======
    
-   gem install rake bundler
-   rake build
+      gem install rake bundler
+      rake build
 
 Many of the tools that Bill's Kitchen installs are already part of my existing tool chain. 
 I have them customized to my liking and maintaining too seperate copies is not [fun](http://dwarffortresswiki.org/index.php/DF2012:Losing) 
